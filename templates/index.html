@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BrickMind</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #f9f3e3;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #e3000b;
+            padding: 20px 40px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: 0 4px 0px #b0000a;
+        }
+
+        .lego-dot {
+            width: 32px;
+            height: 32px;
+            background: #ffcb00;
+            border-radius: 50%;
+            border: 3px solid #e6b800;
+            box-shadow: 0 3px 0 #b08c00;
+            display: inline-block;
+        }
+
+        header h1 {
+            color: white;
+            font-size: 32px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 0px #8b0000;
+        }
+
+        header p {
+            color: #ffe8e8;
+            font-size: 14px;
+            margin-left: auto;
+            font-weight: 700;
+        }
+
+        .container {
+            max-width: 860px;
+            margin: 40px auto;
+            padding: 0 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            border: 3px solid #222;
+            box-shadow: 6px 6px 0px #222;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            border: 3px solid #222;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            box-shadow: 3px 3px 0 #222;
+        }
+
+        .icon-yellow { background: #ffcb00; }
+        .icon-blue { background: #006cb7; }
+
+        .card h2 {
+            font-size: 22px;
+            font-weight: 900;
+            color: #222;
+        }
+
+        .card p.subtitle {
+            color: #666;
+            font-size: 14px;
+            font-weight: 700;
+            margin-top: 2px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            flex: 1;
+            min-width: 160px;
+        }
+
+        label {
+            font-size: 13px;
+            font-weight: 900;
+            color: #444;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        input, select, textarea {
+            padding: 12px 14px;
+            border: 2px solid #222;
+            border-radius: 8px;
+            font-size: 15px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 700;
+            outline: none;
+            transition: border-color 0.2s;
+            background: #fffdf5;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: #e3000b;
+        }
+
+        textarea {
+            resize: vertical;
+            height: 100px;
+        }
+
+        .btn {
+            margin-top: 20px;
+            padding: 14px 28px;
+            font-size: 16px;
+            font-weight: 900;
+            font-family: 'Nunito', sans-serif;
+            border: 3px solid #222;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.1s, box-shadow 0.1s;
+            box-shadow: 4px 4px 0 #222;
+            width: 100%;
+        }
+
+        .btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0 #222;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-red {
+            background: #e3000b;
+            color: white;
+        }
+
+        .btn-blue {
+            background: #006cb7;
+            color: white;
+        }
+
+        .result-box {
+            display: none;
+            margin-top: 24px;
+            background: #fffdf5;
+            border: 2px solid #222;
+            border-radius: 12px;
+            padding: 20px;
+            font-size: 15px;
+            line-height: 1.8;
+            color: #333;
+            white-space: pre-wrap;
+            font-weight: 700;
+        }
+
+        .result-label {
+            font-size: 12px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #999;
+            margin-bottom: 8px;
+        }
+
+        .studs-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .stud {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid #222;
+            box-shadow: 0 2px 0 #222;
+        }
+
+        .stud-red { background: #e3000b; }
+        .stud-yellow { background: #ffcb00; }
+        .stud-blue { background: #006cb7; }
+        .stud-green { background: #00a650; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="lego-dot"></div>
+        <div class="lego-dot"></div>
+        <h1>BrickMind</h1>
+        <p>Your AI Lego Companion 🧱</p>
+    </header>
+
+    <div class="container">
+
+        <!-- Build Challenge Card -->
+        <div class="card">
+            <div class="studs-row">
+                <div class="stud stud-red"></div>
+                <div class="stud stud-yellow"></div>
+                <div class="stud stud-blue"></div>
+                <div class="stud stud-green"></div>
+                <div class="stud stud-red"></div>
+                <div class="stud stud-yellow"></div>
+            </div>
+            <div class="card-header">
+                <div class="card-icon icon-yellow">🏆</div>
+                <div>
+                    <h2>Build Challenge Generator</h2>
+                    <p class="subtitle">Get a custom building challenge based on your setup</p>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Theme</label>
+                    <select id="theme">
+                        <option value="space">Space</option>
+                        <option value="city">City</option>
+                        <option value="castle">Castle</option>
+                        <option value="jungle">Jungle</option>
+                        <option value="ocean">Ocean</option>
+                        <option value="superheroes">Superheroes</option>
+                        <option value="sports">Sports</option>
+                        <option value="WWE wrestling">WWE Wrestling</option>
+                        <option value="video games">Video Games</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Approx. Pieces</label>
+                    <select id="pieces">
+                        <option value="under 100">Under 100</option>
+                        <option value="100-500">100 - 500</option>
+                        <option value="500-1000">500 - 1000</option>
+                        <option value="1000+">1000+</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Age Range</label>
+                    <select id="age">
+                        <option value="6-10">6 - 10</option>
+                        <option value="11-14">11 - 14</option>
+                        <option value="15-17">15 - 17</option>
+                        <option value="18+">18+</option>
+                    </select>
+                </div>
+            </div>
+
+            <button class="btn btn-red" onclick="getChallenge()">Generate Challenge 🚀</button>
+
+            <div class="result-box" id="challenge-result">
+                <div class="result-label">Your Challenge</div>
+                <div id="challenge-text"></div>
+            </div>
+        </div>
+
+        <!-- Set Recommender Card -->
+        <div class="card">
+            <div class="studs-row">
+                <div class="stud stud-blue"></div>
+                <div class="stud stud-green"></div>
+                <div class="stud stud-red"></div>
+                <div class="stud stud-yellow"></div>
+                <div class="stud stud-blue"></div>
+                <div class="stud stud-green"></div>
+            </div>
+            <div class="card-header">
+                <div class="card-icon icon-blue">🎯</div>
+                <div>
+                    <h2>Set Recommender</h2>
+                    <p class="subtitle">Tell us what you're into and we'll find your perfect sets</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Your Interests</label>
+                <textarea id="interests" placeholder="e.g. I love WWE wrestling, sports, and video games like Call of Duty..."></textarea>
+            </div>
+
+            <button class="btn btn-blue" onclick="getRecommendations()">Find My Sets 🧱</button>
+
+            <div class="result-box" id="recommend-result">
+                <div class="result-label">Recommended Sets</div>
+                <div id="recommend-text"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        async function getChallenge() {
+            const btn = event.target;
+            const theme = document.getElementById("theme").value;
+            const pieces = document.getElementById("pieces").value;
+            const age = document.getElementById("age").value;
+            const resultBox = document.getElementById("challenge-result");
+            const resultText = document.getElementById("challenge-text");
+
+            btn.disabled = true;
+            btn.textContent = "Building your challenge...";
+            resultBox.style.display = "none";
+
+            try {
+                const response = await fetch("/challenge", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ theme, pieces, age })
+                });
+
+                const data = await response.json();
+                resultText.textContent = data.result;
+                resultBox.style.display = "block";
+            } catch (err) {
+                alert("Something went wrong. Make sure Flask is running.");
+            }
+
+            btn.disabled = false;
+            btn.textContent = "Generate Challenge 🚀";
+        }
+
+        async function getRecommendations() {
+            const btn = event.target;
+            const interests = document.getElementById("interests").value.trim();
+            const resultBox = document.getElementById("recommend-result");
+            const resultText = document.getElementById("recommend-text");
+
+            if (!interests) {
+                alert("Tell us what you're into first!");
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = "Finding your sets...";
+            resultBox.style.display = "none";
+
+            try {
+                const response = await fetch("/recommend", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ interests })
+                });
+
+                const data = await response.json();
+                resultText.textContent = data.result;
+                resultBox.style.display = "block";
+            } catch (err) {
+                alert("Something went wrong. Make sure Flask is running.");
+            }
+
+            btn.disabled = false;
+            btn.textContent = "Find My Sets 🧱";
+        }
+    </script>
+
+</body>
+</html>
