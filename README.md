@@ -2,7 +2,7 @@
 
 # BrickMind 🧱
 
-https://github.com/user-attachments/assets/0de0ee76-480e-4631-ae02-d09bb0a9747f
+
 
 
 
