@@ -3,7 +3,7 @@
 # BrickMind 🧱
 
 
-
+Live site: https://brickmind.onrender.com/
 
 
 An AI-powered Lego companion app that generates custom building challenges and recommends official Lego sets based on your interests.
